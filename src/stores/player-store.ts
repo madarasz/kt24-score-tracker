@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { PlayerModel } from '@/model/player-model'
-import type { primaryType } from '@/model/score-model'
+import { type primaryType } from '@/constants'
 
 export const usePlayerStore = (id: string) =>
   defineStore(id, {
@@ -11,8 +11,8 @@ export const usePlayerStore = (id: string) =>
       updateCritOp(index: number, score: number) {
         this.player.score.critOp[index] = score
       },
-      updateKillOp(score: number) {
-        this.player.score.killOp = score
+      updateKills(score: number) {
+        this.player.score.kills = score
       },
       updateTacOp(index: number, score: number) {
         this.player.score.tacOp[index] = score
@@ -33,6 +33,9 @@ export const usePlayerStore = (id: string) =>
       },
       setFaction(faction: string) {
         this.player.faction = faction
+      },
+      setOperativeCount(count: number) {
+        this.player.operativeCount = count
       }
     }
   })()

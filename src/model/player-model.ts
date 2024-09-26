@@ -7,6 +7,7 @@ export class PlayerModel {
     public cp: number = 3,
     public tacOpMission: string = HIDDEN_VALUE,
     public name: string = 'Player',
-    public faction: string = 'Unknown'
+    public faction: string = 'Unknown',
+    public operativeCount: number = 10
   ) {}
 }

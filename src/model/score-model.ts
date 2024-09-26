@@ -1,11 +1,9 @@
-import { HIDDEN_VALUE } from '@/constants'
-
-export type primaryType = 'Crit Op' | 'Kill Op' | 'Tac Op' | typeof HIDDEN_VALUE
+import { HIDDEN_VALUE, type primaryType } from '@/constants'
 
 export class ScoreModel {
   constructor(
     public critOp: [number, number, number] = [0, 0, 0],
-    public killOp: number = 0,
+    public kills: number = 0,
     public tacOp: [number, number, number] = [0, 0, 0],
     public primary: primaryType = HIDDEN_VALUE
   ) {}
@@ -18,22 +16,25 @@ export class ScoreModel {
     return this.tacOp.reduce((acc, curr) => acc + curr, 0)
   }
 
-  get totalScore(): number {
-    let total = this.totalCritOp + this.totalTacOp + this.killOp
+  get totalKillOp(): number {
+    return this.kills // TODO: update
+  }
+
+  get primaryPlus(): number {
     switch (this.primary) {
       case 'Crit Op':
-        total += Math.ceil(this.totalCritOp / 2)
-        break
+        return Math.ceil(this.totalCritOp / 2)
       case 'Kill Op':
-        total += Math.ceil(this.killOp / 2)
-        break
+        return Math.ceil(this.totalKillOp / 2)
       case 'Tac Op':
-        total += Math.ceil(this.totalTacOp / 2)
-        break
+        return Math.ceil(this.totalTacOp / 2)
       default:
         // If primary is 'hidden' or any other value, no score is modified
-        break
+        return 0
     }
-    return total
+  }
+
+  get totalScore(): number {
+    return this.totalCritOp + this.totalTacOp + this.totalKillOp + this.primaryPlus
   }
 }
