@@ -1,11 +1,13 @@
-import { HIDDEN_VALUE, type primaryType } from '@/constants'
+import { HIDDEN_VALUE, killScoring, type primaryType } from '@/constants'
 
 export class ScoreModel {
   constructor(
     public critOp: [number, number, number] = [0, 0, 0],
     public kills: number = 0,
     public tacOp: [number, number, number] = [0, 0, 0],
-    public primary: primaryType = HIDDEN_VALUE
+    public primary: primaryType = HIDDEN_VALUE,
+    public enemyOperativeCount: number = 10,
+    public enemyKillOp: number = 0
   ) {}
 
   get totalCritOp(): number {
@@ -17,7 +19,18 @@ export class ScoreModel {
   }
 
   get totalKillOp(): number {
-    return this.kills // TODO: update
+    const scoring: number[] = killScoring[this.enemyOperativeCount]
+    console.log('array', scoring, this.kills)
+    for (let i = 0; i < 5; i++) {
+      if (scoring[i] >= this.kills && (scoring[i + 1] < this.kills || i == 5)) return i + 1
+    }
+    console.log('fail')
+    return 0 // error handling
+  }
+
+  get killOpPlus(): number {
+    if (this.totalKillOp > this.enemyKillOp) return 1
+    return 0
   }
 
   get primaryPlus(): number {
@@ -35,6 +48,8 @@ export class ScoreModel {
   }
 
   get totalScore(): number {
-    return this.totalCritOp + this.totalTacOp + this.totalKillOp + this.primaryPlus
+    return (
+      this.totalCritOp + this.totalTacOp + this.totalKillOp + this.primaryPlus + this.killOpPlus
+    )
   }
 }

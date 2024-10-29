@@ -11,39 +11,23 @@
     </div>
     <div>
       Crit Ops: {{ this.player.score.totalCritOp }}
-      <select v-model="critOpTp2">
-        <option v-for="number in range(0, 2)" :key="number" :value="number">
-          {{ number }}
-        </option>
-      </select>
-      <select v-model="critOpTp3">
-        <option v-for="number in range(0, 2)" :key="number" :value="number">
-          {{ number }}
-        </option>
-      </select>
-      <select v-model="critOpTp4">
-        <option v-for="number in range(0, 2)" :key="number" :value="number">
-          {{ number }}
-        </option>
-      </select>
+      <div v-for="(critOp, index) in [0, 1, 2]" :key="'critOp' + index">
+        <select v-model="critOpValues[index]">
+          <option v-for="number in range(0, 2)" :key="number" :value="number">
+            {{ number }}
+          </option>
+        </select>
+      </div>
     </div>
     <div>
       Tac Ops:{{ this.player.score.totalTacOp }}
-      <select v-model="tacOpTp2">
-        <option v-for="number in range(0, 2)" :key="number" :value="number">
-          {{ number }}
-        </option>
-      </select>
-      <select v-model="tacOpTp3">
-        <option v-for="number in range(0, 2)" :key="number" :value="number">
-          {{ number }}
-        </option>
-      </select>
-      <select v-model="tacOpTp4">
-        <option v-for="number in range(0, 2)" :key="number" :value="number">
-          {{ number }}
-        </option>
-      </select>
+      <div v-for="(tacOp, index) in [0, 1, 2]" :key="'tacOp' + index">
+        <select v-model="tacOpValues[index]">
+          <option v-for="number in range(0, 2)" :key="number" :value="number">
+            {{ number }}
+          </option>
+        </select>
+      </div>
     </div>
     <div>
       Kill Ops: {{ this.player.score.totalKillOp }}
@@ -80,6 +64,10 @@ export default {
     playerId: {
       type: String,
       required: true
+    },
+    enemyOperativeCount: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -107,52 +95,24 @@ export default {
         this.playerStore.setOperativeCount(value)
       }
     },
-    critOpTp2: {
+    critOpValues: {
       get() {
-        return this.playerStore.player.score.critOp[0]
+        return this.playerStore.player.score.critOp
       },
-      set(value) {
-        this.playerStore.updateCritOp(0, value)
+      set(values) {
+        values.forEach((value, index) => {
+          this.playerStore.updateCritOp(index, value)
+        })
       }
     },
-    critOpTp3: {
+    tacOpValues: {
       get() {
-        return this.playerStore.player.score.critOp[1]
+        return this.playerStore.player.score.tacOp
       },
-      set(value) {
-        this.playerStore.updateCritOp(1, value)
-      }
-    },
-    critOpTp4: {
-      get() {
-        return this.playerStore.player.score.critOp[2]
-      },
-      set(value) {
-        this.playerStore.updateCritOp(2, value)
-      }
-    },
-    tacOpTp2: {
-      get() {
-        return this.playerStore.player.score.tacOp[0]
-      },
-      set(value) {
-        this.playerStore.updateTacOp(0, value)
-      }
-    },
-    tacOpTp3: {
-      get() {
-        return this.playerStore.player.score.tacOp[1]
-      },
-      set(value) {
-        this.playerStore.updateTacOp(1, value)
-      }
-    },
-    tacOpTp4: {
-      get() {
-        return this.playerStore.player.score.tacOp[2]
-      },
-      set(value) {
-        this.playerStore.updateTacOp(2, value)
+      set(values) {
+        values.forEach((value, index) => {
+          this.playerStore.updateTacOp(index, value)
+        })
       }
     },
     kills: {

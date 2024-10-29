@@ -1,7 +1,15 @@
 <template>
   <main>
-    <PlayerScore :player="player1.player" player-id="player1" />
-    <PlayerScore :player="player2.player" player-id="player2" />
+    <PlayerScore
+      :player="player1.player"
+      player-id="player1"
+      :enemy-operative-count="player2.player.operativeCount"
+    />
+    <PlayerScore
+      :player="player2.player"
+      player-id="player2"
+      :enemy-operative-count="player1.player.operativeCount"
+    />
   </main>
 </template>
 
